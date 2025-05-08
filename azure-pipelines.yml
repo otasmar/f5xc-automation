@@ -1,0 +1,69 @@
+trigger:
+- main  # Adjust to your branch
+
+variables:
+  TF_ROOT: "terraform"
+  TF_VAR_api_p12_file: "$(Build.SourcesDirectory)/${TF_ROOT}/credentials/xc-api-cert.p12"  # Path to the .p12 certificate
+  TF_VAR_url: "https://<tenant_name>.console.ves.volterra.io/api"  # URL to the Volterra API
+  API_CERT_PASSWORD: $(apiCertPassword)  # The API certificate password defined as a secret in Azure DevOps
+
+stages:
+- stage: Init
+  jobs:
+  - job: Init
+    pool:
+      vmImage: 'ubuntu-latest'  # You can also use other agents
+    steps:
+    - task: UseTerraform@0
+      inputs:
+        versionSpec: '1.x'
+        addTerraformCliToPath: true
+    - script: |
+        curl -L -o terraform-provider-volterra.zip https://github.com/f5devcentral/terraform-provider-volterra/releases/latest/download/terraform-provider-volterra-linux-amd64.zip
+        unzip terraform-provider-volterra.zip -d ~/.terraform.d/plugins
+        chmod +x ~/.terraform.d/plugins/terraform-provider-volterra
+      displayName: 'Download and Install Volterra Provider'
+    - script: |
+        cd $(Build.SourcesDirectory)/${TF_ROOT}
+        terraform init
+      displayName: 'Terraform Init'
+
+- stage: Plan
+  jobs:
+  - job: Plan
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: UseTerraform@0
+      inputs:
+        versionSpec: '1.x'
+        addTerraformCliToPath: true
+    - script: |
+        curl -L -o terraform-provider-volterra.zip https://github.com/f5devcentral/terraform-provider-volterra/releases/latest/download/terraform-provider-volterra-linux-amd64.zip
+        unzip terraform-provider-volterra.zip -d ~/.terraform.d/plugins
+        chmod +x ~/.terraform.d/plugins/terraform-provider-volterra
+      displayName: 'Download and Install Volterra Provider'
+    - script: |
+        cd $(Build.SourcesDirectory)/${TF_ROOT}
+        terraform plan -var="api_cert_password=$(API_CERT_PASSWORD)"
+      displayName: 'Terraform Plan'
+
+- stage: Apply
+  jobs:
+  - job: Apply
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: UseTerraform@0
+      inputs:
+        versionSpec: '1.x'
+        addTerraformCliToPath: true
+    - script: |
+        curl -L -o terraform-provider-volterra.zip https://github.com/f5devcentral/terraform-provider-volterra/releases/latest/download/terraform-provider-volterra-linux-amd64.zip
+        unzip terraform-provider-volterra.zip -d ~/.terraform.d/plugins
+        chmod +x ~/.terraform.d/plugins/terraform-provider-volterra
+      displayName: 'Download and Install Volterra Provider'
+    - script: |
+        cd $(Build.SourcesDirectory)/${TF_ROOT}
+        terraform apply -auto-approve -var="api_cert_password=$(API_CERT_PASSWORD)"
+      displayName: 'Terraform Apply'
