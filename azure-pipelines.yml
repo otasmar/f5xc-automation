@@ -6,7 +6,7 @@ variables:
   API_CERT_PASSWORD: $(apiCertPassword)
 
 pool:
-  vmImage: 'ubuntu-latest'
+  name: o-alasmar-windows-image  # Your self-hosted agent pool
 
 steps:
 - script: |
