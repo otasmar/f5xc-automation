@@ -18,11 +18,16 @@ stages:
   - job: TerraformInit
     steps:
     - script: |
-        echo "Setting VES_P12_PASSWORD env var"
+        echo "Debugging folder structure"
+        ls -R "$BUILD_SOURCESDIRECTORY"
+        echo "Now entering TF_ROOT"
         export VES_P12_PASSWORD=$(VES_P12_PASSWORD)
-        cd "$(Build.SourcesDirectory)/$(TF_ROOT)"
+        cd "$BUILD_SOURCESDIRECTORY/$TF_ROOT"
+        ls -la
         terraform init
       displayName: 'Terraform Init'
+
+
 
 # -------------------
 # Stage 2: Plan
