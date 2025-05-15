@@ -18,12 +18,11 @@ stages:
   - job: TerraformInit
     steps:
     - script: |
-        echo Setting VES_P12_PASSWORD env var
-        set VES_P12_PASSWORD=%VES_P12_PASSWORD%
-        cd %BUILD_SOURCESDIRECTORY%\%TF_ROOT%
+        echo "Setting VES_P12_PASSWORD env var"
+        export VES_P12_PASSWORD=$(VES_P12_PASSWORD)
+        cd "$(Build.SourcesDirectory)/$(TF_ROOT)"
         terraform init
       displayName: 'Terraform Init'
-      shell: cmd
 
 # -------------------
 # Stage 2: Plan
@@ -34,12 +33,11 @@ stages:
   - job: TerraformPlan
     steps:
     - script: |
-        echo Setting VES_P12_PASSWORD env var
-        set VES_P12_PASSWORD=%VES_P12_PASSWORD%
-        cd %BUILD_SOURCESDIRECTORY%\%TF_ROOT%
-        terraform plan -var="api_cert_password=%API_CERT_PASSWORD%"
+        echo "Setting VES_P12_PASSWORD env var"
+        export VES_P12_PASSWORD=$(VES_P12_PASSWORD)
+        cd "$(Build.SourcesDirectory)/$(TF_ROOT)"
+        terraform plan -var="api_cert_password=$(API_CERT_PASSWORD)"
       displayName: 'Terraform Plan'
-      shell: cmd
 
 # -------------------
 # Stage 3: Apply
@@ -50,9 +48,8 @@ stages:
   - job: TerraformApply
     steps:
     - script: |
-        echo Setting VES_P12_PASSWORD env var
-        set VES_P12_PASSWORD=%VES_P12_PASSWORD%
-        cd %BUILD_SOURCESDIRECTORY%\%TF_ROOT%
-        terraform apply -auto-approve -var="api_cert_password=%API_CERT_PASSWORD%"
+        echo "Setting VES_P12_PASSWORD env var"
+        export VES_P12_PASSWORD=$(VES_P12_PASSWORD)
+        cd "$(Build.SourcesDirectory)/$(TF_ROOT)"
+        terraform apply -auto-approve -var="api_cert_password=$(API_CERT_PASSWORD)"
       displayName: 'Terraform Apply'
-      shell: cmd
