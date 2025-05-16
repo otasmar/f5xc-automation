@@ -27,7 +27,7 @@ stages:
         echo "Running terraform init..."
         export VES_P12_PASSWORD="${VES_P12_PASSWORD}"
         cd "$BUILD_SOURCESDIRECTORY/$TF_ROOT"
-        terraform init -backend-config="path=$TF_STATE_DIR/terraform.tfstate"
+        terraform init
       displayName: 'Terraform Init'
 
 # -------------------
@@ -41,10 +41,11 @@ stages:
     displayName: 'Plan & Apply Job'
     steps:
     - script: |
-        echo "Running terraform plan and apply with local state..."
+        echo "Running terraform plan and apply with custom local state..."
         export VES_P12_PASSWORD="${VES_P12_PASSWORD}"
         cd "$BUILD_SOURCESDIRECTORY/$TF_ROOT"
-        terraform init -backend-config="path=$TF_STATE_DIR/terraform.tfstate"
-        terraform plan -out=tfplan -state="$TF_STATE_DIR/terraform.tfstate"
-        terraform apply -auto-approve tfplan
+
+        terraform init
+        terraform plan -state="$TF_STATE_DIR/terraform.tfstate" -out=tfplan
+        terraform apply -state="$TF_STATE_DIR/terraform.tfstate" -auto-approve tfplan
       displayName: 'Terraform Plan & Apply'
