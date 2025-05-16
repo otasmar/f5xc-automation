@@ -46,5 +46,5 @@ stages:
         cd "$BUILD_SOURCESDIRECTORY/$TF_ROOT"
         terraform init -backend-config="path=$TF_STATE_DIR/terraform.tfstate"
         terraform plan -out=tfplan -state="$TF_STATE_DIR/terraform.tfstate"
-        terraform apply -auto-approve tfplan -state="$TF_STATE_DIR/terraform.tfstate"
+        terraform apply -auto-approve tfplan
       displayName: 'Terraform Plan & Apply'
