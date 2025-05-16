@@ -3,6 +3,7 @@ trigger:
 
 variables:
   TF_ROOT: "Terraform"
+  TF_path: "MulitipleLB"
   TF_STATE_DIR: "/home/azureuser/infra/terraform-state"
   API_CERT_PASSWORD: "F5lab2023*"
   VES_P12_PASSWORD: "F5lab2023*"
@@ -26,7 +27,7 @@ stages:
 
         echo "Running terraform init..."
         export VES_P12_PASSWORD="${VES_P12_PASSWORD}"
-        cd "$BUILD_SOURCESDIRECTORY/$TF_ROOT"
+        cd "$BUILD_SOURCESDIRECTORY/$TF_ROOT/$TF_path"
         terraform init
       displayName: 'Terraform Init'
 
@@ -43,7 +44,7 @@ stages:
     - script: |
         echo "Running terraform plan and apply with custom local state..."
         export VES_P12_PASSWORD="${VES_P12_PASSWORD}"
-        cd "$BUILD_SOURCESDIRECTORY/$TF_ROOT"
+        cd "$BUILD_SOURCESDIRECTORY/$TF_ROOT/$TF_path"
 
         terraform init
         terraform plan -state="$TF_STATE_DIR/terraform.tfstate" -out=tfplan
