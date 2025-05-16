@@ -25,14 +25,12 @@ stages:
       displayName: 'Terraform Init '
 
 
-
 # -------------------
-# Stage 2: Plan
+# Stage 2: Plan&Apply
 # -------------------
-- stage: Plan
-  dependsOn: Init
+- stage: Apply
   jobs:
-  - job: TerraformPlan
+  - job: TerraformPlanApply
     steps:
     - script: |
         echo "Setting VES_P12_PASSWORD env var"
@@ -40,20 +38,5 @@ stages:
         cd "$(Build.SourcesDirectory)/$(TF_ROOT)"
         terraform init
         terraform plan
-      displayName: 'Terraform Plan'
-
-# -------------------
-# Stage 3: Apply
-# -------------------
-- stage: Apply
-  dependsOn: Plan
-  jobs:
-  - job: TerraformApply
-    steps:
-    - script: |
-        echo "Setting VES_P12_PASSWORD env var"
-        export VES_P12_PASSWORD=$(VES_P12_PASSWORD)
-        cd "$(Build.SourcesDirectory)/$(TF_ROOT)"
-        terraform init
         terraform apply -auto-approve
       displayName: 'Terraform Apply'
