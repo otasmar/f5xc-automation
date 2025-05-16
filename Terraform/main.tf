@@ -62,9 +62,9 @@ resource "volterra_http_loadbalancer" "http-lb" {
   namespace   = var.namespace
   labels      = {}
   annotations = {}
-  domains     = ["${var.namespace}-tf.lab-app.f5demos.com"]
+  domains     = ["${var.namespace}-tf.aforceforcyber.com"]
   http {
-    dns_volterra_managed = true
+    dns_volterra_managed = false
     port                 = 80
   }
   advertise_on_public_default_vip = true
