@@ -56,13 +56,54 @@ resource "volterra_origin_pool" "http-origin-pool" {
   endpoint_selection     = "LOCALPREFERED"
 }
 
-# Create Load Balancer
+# Create Load Balancer #1
 resource "volterra_http_loadbalancer" "http-lb" {
   name        = "${var.namespace}-tf-http-lb"
   namespace   = var.namespace
   labels      = {}
   annotations = {}
   domains     = ["${var.namespace}-tf.aforceforcyber.com"]
+  http {
+    dns_volterra_managed = false
+    port                 = 80
+  }
+  advertise_on_public_default_vip = true
+
+  default_route_pools {
+    pool {
+      name      = volterra_origin_pool.http-origin-pool.name
+      namespace = var.namespace
+    }
+    weight           = 1
+    priority         = 1
+    endpoint_subsets = {}
+  }
+
+  disable_api_definition           = true
+  disable_waf                      = true
+  add_location                     = true
+  no_challenge                     = true
+  user_id_client_ip                = true
+  disable_rate_limit               = true
+  service_policies_from_namespace  = true
+  round_robin                      = true
+  disable_trust_client_ip_headers  = true
+  disable_malicious_user_detection = true
+  disable_api_discovery            = true
+  disable_bot_defense              = true
+  disable_ip_reputation            = true
+  disable_client_side_defense      = true
+  no_service_policies              = true
+  source_ip_stickiness             = true
+}
+
+# Create Load Balancer #1
+resource "volterra_http_loadbalancer" "http-lb" {
+  name        = "${var.namespace}-tf2-http-lb"
+  namespace   = var.namespace
+  labels      = {}
+  annotations = {}
+  domains     = ["${var.namespace}-tf2.aforceforcyber.com"]
   http {
     dns_volterra_managed = false
     port                 = 80
