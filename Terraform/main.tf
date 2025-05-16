@@ -58,7 +58,7 @@ resource "volterra_origin_pool" "http-origin-pool" {
 
 # Create Load Balancer
 resource "volterra_http_loadbalancer" "http-lb" {
-  name        = "${var.namespace}-tf1-http-lb"
+  name        = "${var.namespace}-tf-http-lb"
   namespace   = var.namespace
   labels      = {}
   annotations = {}
