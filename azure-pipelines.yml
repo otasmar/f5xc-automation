@@ -3,7 +3,7 @@ trigger:
 
 variables:
   TF_ROOT: "Terraform"
-  TF_STATE_DIR: "~/infra/terraform-state"
+  TF_STATE_DIR: "/home/azureuser/infra/terraform-state"
   API_CERT_PASSWORD: "F5lab2023*"
   VES_P12_PASSWORD: "F5lab2023*"
 
