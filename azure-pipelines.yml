@@ -25,7 +25,7 @@ stages:
         cd "$BUILD_SOURCESDIRECTORY/$TF_ROOT"
         ls -la
         terraform init
-      displayName: 'Terraform Init'
+      displayName: 'Terraform Init '
 
 
 
@@ -41,7 +41,7 @@ stages:
         echo "Setting VES_P12_PASSWORD env var"
         export VES_P12_PASSWORD=$(VES_P12_PASSWORD)
         cd "$(Build.SourcesDirectory)/$(TF_ROOT)"
-        terraform plan -var="api_cert_password=$(API_CERT_PASSWORD)"
+        terraform plan
       displayName: 'Terraform Plan'
 
 # -------------------
@@ -56,5 +56,5 @@ stages:
         echo "Setting VES_P12_PASSWORD env var"
         export VES_P12_PASSWORD=$(VES_P12_PASSWORD)
         cd "$(Build.SourcesDirectory)/$(TF_ROOT)"
-        terraform apply -auto-approve -var="api_cert_password=$(API_CERT_PASSWORD)"
+        terraform apply -auto-approve
       displayName: 'Terraform Apply'
