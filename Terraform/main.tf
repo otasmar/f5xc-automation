@@ -62,7 +62,7 @@ resource "volterra_http_loadbalancer" "http-lb" {
   namespace   = var.namespace
   labels      = {}
   annotations = {}
-  domains     = ["${var.namespace}-tf1.aforceforcyber.com"]
+  domains     = ["${var.namespace}-tf.aforceforcyber.com"]
   http {
     dns_volterra_managed = false
     port                 = 80
