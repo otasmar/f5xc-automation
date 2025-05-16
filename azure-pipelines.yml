@@ -3,6 +3,7 @@ trigger:
 
 variables:
   TF_ROOT: "Terraform"
+  TF_STATE_DIR: "$(HOME)/infra/terraform-state"
   API_CERT_PASSWORD: "F5lab2023*"
   VES_P12_PASSWORD: "F5lab2023*"
 
@@ -14,29 +15,36 @@ stages:
 # Stage 1: Init
 # -------------------
 - stage: Init
+  displayName: 'Terraform Init'
   jobs:
   - job: TerraformInit
+    displayName: 'Init Job'
     steps:
     - script: |
-        echo "Now entering TF_ROOT"
-        export VES_P12_PASSWORD=$(VES_P12_PASSWORD)
-        cd "$BUILD_SOURCESDIRECTORY/$TF_ROOT"
-        terraform init
-      displayName: 'Terraform Init '
+        echo "Creating local Terraform state directory..."
+        mkdir -p "$TF_STATE_DIR"
 
+        echo "Running terraform init..."
+        export VES_P12_PASSWORD="${VES_P12_PASSWORD}"
+        cd "$BUILD_SOURCESDIRECTORY/$TF_ROOT"
+        terraform init -backend-config="path=$TF_STATE_DIR/terraform.tfstate"
+      displayName: 'Terraform Init'
 
 # -------------------
-# Stage 2: Plan&Apply
+# Stage 2: Plan & Apply
 # -------------------
 - stage: Apply
+  displayName: 'Terraform Plan and Apply'
+  dependsOn: Init
   jobs:
   - job: TerraformPlanApply
+    displayName: 'Plan & Apply Job'
     steps:
     - script: |
-        echo "Setting VES_P12_PASSWORD env var"
-        export VES_P12_PASSWORD=$(VES_P12_PASSWORD)
-        cd "$(Build.SourcesDirectory)/$(TF_ROOT)"
-        terraform init
-        terraform plan
-        terraform apply -auto-approve
-      displayName: 'Terraform Apply'
+        echo "Running terraform plan and apply with local state..."
+        export VES_P12_PASSWORD="${VES_P12_PASSWORD}"
+        cd "$BUILD_SOURCESDIRECTORY/$TF_ROOT"
+
+        terraform plan -out=tfplan -state="$TF_STATE_DIR/terraform.tfstate"
+        terraform apply -auto-approve tfplan -state="$TF_STATE_DIR/terraform.tfstate"
+      displayName: 'Terraform Plan & Apply'
