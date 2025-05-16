@@ -44,7 +44,7 @@ stages:
         echo "Running terraform plan and apply with local state..."
         export VES_P12_PASSWORD="${VES_P12_PASSWORD}"
         cd "$BUILD_SOURCESDIRECTORY/$TF_ROOT"
-
+        terraform init -backend-config="path=$TF_STATE_DIR/terraform.tfstate"
         terraform plan -out=tfplan -state="$TF_STATE_DIR/terraform.tfstate"
         terraform apply -auto-approve tfplan -state="$TF_STATE_DIR/terraform.tfstate"
       displayName: 'Terraform Plan & Apply'
