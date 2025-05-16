@@ -58,11 +58,11 @@ resource "volterra_origin_pool" "http-origin-pool" {
 
 # Create Load Balancer
 resource "volterra_http_loadbalancer" "http-lb" {
-  name        = "${var.namespace}-tf-http-lb"
+  name        = "${var.namespace}-tf1-http-lb"
   namespace   = var.namespace
   labels      = {}
   annotations = {}
-  domains     = ["${var.namespace}-tf.aforceforcyber.com"]
+  domains     = ["${var.namespace}-tf1.aforceforcyber.com"]
   http {
     dns_volterra_managed = false
     port                 = 80
