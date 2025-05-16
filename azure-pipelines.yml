@@ -54,5 +54,6 @@ stages:
         echo "Setting VES_P12_PASSWORD env var"
         export VES_P12_PASSWORD=$(VES_P12_PASSWORD)
         cd "$(Build.SourcesDirectory)/$(TF_ROOT)"
+        terraform init
         terraform apply -auto-approve
       displayName: 'Terraform Apply'
