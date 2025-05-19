@@ -5,17 +5,27 @@ namespace   = "default"
 
 loadbalancers = [
   {
-    name             = "lb1"
-    hostname         = "app1.example.com"
-    dns_managed      = true
-    port             = "80"
-    advertise_public = true
+     advertise_public = false
+     dns_managed      = false
+     hostname         = "lb1"
+     name             = "lb1"
+     port             = 80
+     waf_name         = "non-standard"
   },
   {
-    name             = "lb2"
-    hostname         = "app2.example.com"
-    dns_managed      = false
-    port             = "8080"
-    advertise_public = false
+     advertise_public = false
+     dns_managed      = false
+     hostname         = "lb2"
+     name             = "lb2"
+     port             = 80
+     waf_name         = "non-standard"
+  },
+  {
+     advertise_public = false
+     dns_managed      = false
+     hostname         = "lb3"
+     name             = "lb3"
+     port             = 80
+     waf_name         = "non-standard"
   }
 ]
