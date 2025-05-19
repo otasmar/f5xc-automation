@@ -23,5 +23,24 @@ variable "loadbalancers" {
     dns_managed      = bool
     port             = string
     advertise_public = bool
+    waf_name         = string
   }))
+  default = [
+    {
+      name             = "lb1"
+      hostname         = "lb1"
+      dns_managed      = false
+      port             = 80
+      advertise_public = false
+      waf_name         = "waf1"
+    },
+    {
+      name             = "lb2"
+      hostname         = "lb2"
+      dns_managed      = false
+      port             = 80
+      advertise_public = false
+      waf_name         = "waf1"
+    },
+  ]
 }
