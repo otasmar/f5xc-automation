@@ -28,7 +28,7 @@ stages:
         echo "Running terraform init..."
         export VES_P12_PASSWORD="${VES_P12_PASSWORD}"
         cd "$BUILD_SOURCESDIRECTORY/$TF_ROOT"
-        terraform init
+        #terraform init
       displayName: 'Terraform Init'
 
 # -------------------
@@ -46,7 +46,7 @@ stages:
         export VES_P12_PASSWORD="${VES_P12_PASSWORD}"
         cd "$BUILD_SOURCESDIRECTORY/$TF_ROOT"
 
-        terraform init
-        terraform plan -state="$TF_STATE_DIR/terraform.tfstate" -out=tfplan
-        terraform apply -state="$TF_STATE_DIR/terraform.tfstate" -auto-approve tfplan
+        #terraform init
+        #terraform plan -state="$TF_STATE_DIR/terraform.tfstate" -out=tfplan
+        #terraform apply -state="$TF_STATE_DIR/terraform.tfstate" -auto-approve tfplan
       displayName: 'Terraform Plan & Apply'
