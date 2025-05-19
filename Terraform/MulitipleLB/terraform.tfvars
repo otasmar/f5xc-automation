@@ -28,4 +28,12 @@ loadbalancers = [
      port             = 80
      waf_name         = "non-standard"
   }
+{
+     advertise_public = false
+     dns_managed      = false
+     hostname         = "lb4"
+     name             = "lb4"
+     port             = 8080
+     waf_name         = "non-standard"
+  }
 ]
