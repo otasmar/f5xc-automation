@@ -2,7 +2,7 @@ trigger:
 - main
 
 variables:
-  TF_ROOT: "Terraform\MulitipleLB"
+  TF_ROOT: "Terraform/MulitipleLB"
   #TF_path: "MulitipleLB"
   TF_STATE_DIR: "/home/azureuser/infra/terraform-state"
   API_CERT_PASSWORD: "F5lab2023*"
