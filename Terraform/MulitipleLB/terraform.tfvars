@@ -27,7 +27,7 @@ loadbalancers = [
      name             = "lb3"
      port             = 80
      waf_name         = "non-standard"
-  }
+  },
 {
      advertise_public = false
      dns_managed      = false
